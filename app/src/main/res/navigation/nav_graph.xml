@@ -19,5 +19,9 @@
         android:id="@+id/toDetailsFragment"
         android:name="com.example.axxesschallenge.ui.fragments.DetailsFragment"
         android:label="@string/details_fragment_label"
-        tools:layout="@layout/fragment_details"></fragment>
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="imageResponse"
+            app:argType="com.example.axxesschallenge.model.ImageResponse" />
+    </fragment>
 </navigation>

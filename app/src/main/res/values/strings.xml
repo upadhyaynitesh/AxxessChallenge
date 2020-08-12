@@ -5,4 +5,8 @@
     <string name="main_fragment_label">Main Fragment</string>
     <string name="details_fragment_label">Details Fragment</string>
 
+    <!--Main Fragment-->
+    <string name="search_box_hint">Type the word to search</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

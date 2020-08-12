@@ -1,5 +1,8 @@
 package com.example.axxesschallenge.model
 
+import android.os.Parcelable
+import java.io.Serializable
+
 data class ImageResponse(
     val account_id: Int,
     val account_url: String,
@@ -37,4 +40,4 @@ data class ImageResponse(
     val ups: Int,
     val views: Int,
     val vote: Any
-)
+) : Serializable

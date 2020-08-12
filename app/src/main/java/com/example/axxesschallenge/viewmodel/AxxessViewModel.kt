@@ -15,8 +15,8 @@ class AxxessViewModel : ViewModel() {
     private val queryStringLiveData = MutableLiveData<String>()
     var imgurResponseLiveData: LiveData<Resource<ImgurResponse>> = Transformations.switchMap(
         queryStringLiveData
-    ) { id ->
-        apiRepository.fetchApi(id)
+    ) { queryString ->
+        apiRepository.fetchApi(queryString)
     }
 
     fun setImgurResponse(queryString: String?) {

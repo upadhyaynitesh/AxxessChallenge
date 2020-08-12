@@ -1,5 +1,12 @@
 package com.example.axxesschallenge.model
 
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.axxesschallenge.R
+import java.io.Serializable
+
 data class Image(
     val account_id: Any,
     val account_url: Any,
@@ -33,4 +40,23 @@ data class Image(
     val views: Int,
     val vote: Any,
     val width: Int
-)
+) : Serializable {
+    companion object {
+        /*This will load the image downloaded using Glide in imageView of recycler items*/
+        @BindingAdapter("iconImage")
+        @JvmStatic
+        fun loadImage(view: ImageView, image: List<Image>?) {
+            if (image != null) {
+                Glide.with(view.context)  //2
+                    .load(image[0].link) //3
+                    .centerCrop() //4
+                    .thumbnail(/*sizeMultiplier=*/ 0.40f)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.place_holder) //5
+                    .into(view)
+            } else {
+                view.setImageResource(R.drawable.place_holder)
+            }
+        }
+    }
+}
