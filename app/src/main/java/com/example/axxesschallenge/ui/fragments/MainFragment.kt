@@ -1,4 +1,4 @@
-package com.example.axxesschallenge.ui
+package com.example.axxesschallenge.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
