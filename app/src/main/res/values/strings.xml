@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AxxessChallenge</string>
+
+    <!-- Strings used in fragments for navigation -->
+    <string name="main_fragment_label">Main Fragment</string>
+    <string name="details_fragment_label">Details Fragment</string>
+
 </resources>

@@ -1,7 +1,8 @@
-package com.example.axxesschallenge
+package com.example.axxesschallenge.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.axxesschallenge.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
