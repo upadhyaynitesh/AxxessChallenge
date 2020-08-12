@@ -23,7 +23,7 @@ class MainFragment : Fragment() {
     private var axxessViewModel: AxxessViewModel? = AxxessViewModel()
     private lateinit var imgurResponse: ImgurResponse
     private lateinit var imgList: List<ImageResponse>
-    lateinit var dataBinding: FragmentMainBinding
+    private lateinit var dataBinding: FragmentMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,16 +44,16 @@ class MainFragment : Fragment() {
 
         val annexxviewModel = ViewModelProvider(this).get(AxxessViewModel::class.java)
 
-        dataBinding.buttonSearch.setOnClickListener(View.OnClickListener {
+        dataBinding.buttonSearch.setOnClickListener {
             dataBinding.progressBar.visibility = View.VISIBLE
             val searchString = dataBinding.editTextSearch.text.toString()
             annexxviewModel.setImgurResponse(searchString)
-        })
+        }
 
         annexxviewModel.imgurResponseLiveData.observe(viewLifecycleOwner, Observer {
             Toast.makeText(requireActivity(), it.status.name, Toast.LENGTH_LONG).show()
-            if (it.status.equals(Status.SUCCESS)) {
-                dataBinding.progressBar.visibility = View.GONE;
+            if (it.status == Status.SUCCESS) {
+                dataBinding.progressBar.visibility = View.GONE
                 imgurResponse = it.data!!
                 imgList = imgurResponse.data
                 setGridView()
@@ -62,7 +62,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setGridView() {
-        val gridAdapter = GridViewAdapter(requireActivity(), imgList)
+        val gridAdapter = GridViewAdapter(imgList)
         dataBinding.gridViewMain.adapter = gridAdapter
 
         dataBinding.gridViewMain.setOnItemClickListener { adapterView, view, position, id ->

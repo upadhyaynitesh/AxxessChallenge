@@ -1,6 +1,5 @@
 package com.example.axxesschallenge.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import com.example.axxesschallenge.R
 import com.example.axxesschallenge.databinding.GridItemAxxessBinding
 import com.example.axxesschallenge.model.ImageResponse
 
-class GridViewAdapter(val context: Context, private val imgList: List<ImageResponse>) :
+class GridViewAdapter(private val imgList: List<ImageResponse>) :
     BaseAdapter() {
 
     override fun getView(position: Int, p1: View?, p2: ViewGroup): View {

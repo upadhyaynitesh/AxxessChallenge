@@ -20,6 +20,6 @@ class AxxessViewModel : ViewModel() {
     }
 
     fun setImgurResponse(queryString: String?) {
-        this.queryStringLiveData.setValue(queryString)
+        this.queryStringLiveData.value = queryString
     }
 }

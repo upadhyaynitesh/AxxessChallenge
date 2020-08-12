@@ -1,6 +1,5 @@
 package com.example.axxesschallenge.model
 
-import android.os.Parcelable
 import java.io.Serializable
 
 data class ImageResponse(

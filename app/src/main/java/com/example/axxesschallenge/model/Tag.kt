@@ -18,6 +18,5 @@ data class Tag(
     val thumbnail_is_animated: Boolean,
     val total_items: Int
 ) {
-    class DescriptionAnnotations(
-    )
+    class DescriptionAnnotations
 }
