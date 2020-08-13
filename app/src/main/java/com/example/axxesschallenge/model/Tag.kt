@@ -1,5 +1,7 @@
 package com.example.axxesschallenge.model
 
+import java.io.Serializable
+
 data class Tag(
     val accent: String,
     val background_hash: String,
@@ -17,6 +19,6 @@ data class Tag(
     val thumbnail_hash: Any,
     val thumbnail_is_animated: Boolean,
     val total_items: Int
-) {
-    class DescriptionAnnotations
+) : Serializable {
+    class DescriptionAnnotations : Serializable
 }

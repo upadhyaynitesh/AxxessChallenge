@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class AxxessViewModel : ViewModel() {
 
     private val apiRepository = ApiRepository()
-    val queryStringLiveData = MutableLiveData<String>()
+    private val queryStringLiveData = MutableLiveData<String>()
 
     /*Initialized live data. As we are not going to expose mutable live data.
     * Used Transformations.switchMap to make sure any changes happen to queryString will call the apiRepository.fetchApi
