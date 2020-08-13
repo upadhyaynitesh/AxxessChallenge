@@ -14,7 +14,7 @@ class AxxessViewModel(private val state: SavedStateHandle) : ViewModel() {
 
     // Keep the key as a constant
     companion object {
-        private const val USER_KEY = "userId"
+        private const val QUERY_KEY = "searchId"
     }
 
     private val savedStateHandle = state
@@ -22,7 +22,7 @@ class AxxessViewModel(private val state: SavedStateHandle) : ViewModel() {
 
     /*Retrieve search key using savedStateHandle, it helps in persisting the state on screen rotation.*/
     private val queryStringLiveData: MutableLiveData<String> =
-        savedStateHandle.getLiveData(USER_KEY)
+        savedStateHandle.getLiveData(QUERY_KEY)
 
     /*Initialized live data. As we are not going to expose mutable live data.
     * Used Transformations.switchMap to make sure any changes happen to queryString will call the apiRepository.fetchApi
@@ -36,7 +36,7 @@ class AxxessViewModel(private val state: SavedStateHandle) : ViewModel() {
     fun setUserSearchString(queryString: String?) {
         this.queryStringLiveData.postValue(queryString)
         /*Storing search key in savedStateHandle to persist the state on screen rotation.*/
-        savedStateHandle.set(USER_KEY, queryString)
+        savedStateHandle.set(QUERY_KEY, queryString)
     }
 
     fun getSearchTextWatcher(): TextWatcher? {
