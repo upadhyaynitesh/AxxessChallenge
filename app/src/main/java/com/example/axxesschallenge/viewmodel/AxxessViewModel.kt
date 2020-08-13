@@ -6,8 +6,6 @@ import androidx.lifecycle.*
 import com.example.axxesschallenge.model.ImgurResponse
 import com.example.axxesschallenge.networking.ApiRepository
 import com.example.axxesschallenge.networking.Resource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
