@@ -21,25 +21,28 @@ class GridViewAdapter(private val imgList: List<ImageResponse>) :
             inflater,
             R.layout.grid_item_axxess, p2, false
         )
-
         dataBinding.setVariable(
             BR.imageResponse,
             img
         ) //BR - generated class; BR.imageResponse - 'imageResponse' is a variable name declared in layout
 
         dataBinding.executePendingBindings()
+
         return dataBinding.root
     }
 
     override fun getItem(position: Int): Any {
+        /*Return the item using position*/
         return imgList[position]
     }
 
     override fun getItemId(position: Int): Long {
+        /*Return the id of item*/
         return position.toLong()
     }
 
     override fun getCount(): Int {
+        /*Return the size of list*/
         return imgList.size
     }
 }

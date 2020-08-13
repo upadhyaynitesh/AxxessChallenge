@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.example.axxesschallenge.networking.Status"></import>
+
         <variable
             name="axxessViewModel"
             type="com.example.axxesschallenge.viewmodel.AxxessViewModel" />
@@ -15,32 +17,18 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.MainFragment">
 
-        <RelativeLayout
-            android:id="@+id/linearSearch"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:hint="@string/search_box_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <Button
-                android:id="@+id/buttonSearch"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_small"
-                android:background="@drawable/ic_search" />
-
-            <EditText
-                android:id="@+id/editTextSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/buttonSearch"
-                android:hint="@string/search_box_hint"
-                android:imeOptions="actionSearch" />
-        </RelativeLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:textChangedListener="@{axxessViewModel.searchTextWatcher}" />
 
         <GridView
             android:id="@+id/gridViewMain"
@@ -53,16 +41,28 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearSearch" />
+            app:layout_constraintTop_toBottomOf="@id/editTextSearch" />
+
+        <TextView
+            android:id="@+id/textViewMain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Type in search box to get images"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextSearch" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            app:goneUnless="@{axxessViewModel.imgurResponseLiveData.status == Status.LOADING}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearSearch" />
+            app:layout_constraintTop_toBottomOf="@id/editTextSearch" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
