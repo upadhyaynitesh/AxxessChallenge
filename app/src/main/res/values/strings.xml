@@ -6,25 +6,13 @@
     <string name="details_fragment_label">Details Fragment</string>
 
     <!--Main Fragment-->
-    <string name="search_box_hint">Type the word to search</string>
+    <string name="search_box_hint">Type here to search images</string>
 
     <!--Content Description-->
     <string name="item_image_cd">Item image</string>
 
     <!--Details Fragment-->
     <string name="button_submit">Submit</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="comment_box_hint">Put comment here.</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>

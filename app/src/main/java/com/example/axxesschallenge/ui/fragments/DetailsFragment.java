@@ -1,7 +1,10 @@
 package com.example.axxesschallenge.ui.fragments;
 
-import android.database.DatabaseUtils;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,28 +13,24 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.room.Room;
-import androidx.room.RoomDatabase;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.axxesschallenge.AxxessApplication;
 import com.example.axxesschallenge.R;
 import com.example.axxesschallenge.database.AppDatabase;
 import com.example.axxesschallenge.database.ImageDBEntity;
 import com.example.axxesschallenge.databinding.FragmentDetailsBinding;
 import com.example.axxesschallenge.model.ImageResponse;
 import com.example.axxesschallenge.utils.Constants;
-import com.example.axxesschallenge.viewmodel.AxxessViewModel;
+import com.example.axxesschallenge.utils.Utils;
 
-import kotlinx.coroutines.GlobalScope;
+import org.jetbrains.annotations.NotNull;
 
 public class DetailsFragment extends Fragment {
     private FragmentDetailsBinding dataBinding;
     private ImageResponse imageResponse;
-    AxxessViewModel axxessViewModel;
+    AppDatabase appDatabase;
+    AxxessApplication application;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,18 +38,18 @@ public class DetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false);
-
         dataBinding.setLifecycleOwner(getViewLifecycleOwner());
 
         Bundle bundle = getArguments();
         imageResponse = (ImageResponse) bundle.getSerializable("imageResponse");
+        dataBinding.setImageResponse(imageResponse);
 
         Toolbar toolbar = (Toolbar) dataBinding.getRoot().findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        /*Set Tool bar title to Image title user is seeing currently.*/
         toolbar.setTitle(imageResponse.getTitle());
         toolbar.setNavigationIcon(ContextCompat.getDrawable(requireActivity(), R.drawable.ic_baseline_arrow_back_24));
         toolbar.setNavigationOnClickListener(view -> requireActivity().onBackPressed());
@@ -61,21 +60,33 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        String userComment = axxessViewModel.getUserComment(imageResponse.getAccount_id());
-//        if (userComment != null) {
-//            dataBinding.editTextComment.setText(userComment);
-//        }
+        /*Instantiate application object, required to run executor for performing database insert/retrieval operations.*/
+        application = new AxxessApplication();
+        /*Create database object*/
+        appDatabase = Room.databaseBuilder(requireActivity(), AppDatabase.class, Constants.DATABASE_NAME).build();
 
-        dataBinding.setImageResponse(imageResponse);
-        dataBinding.btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String comment = dataBinding.editTextComment.getText().toString().trim();
-                ImageDBEntity imageDBEntity = new ImageDBEntity(imageResponse.getAccount_id(), imageResponse.getImages().get(0).getLink(),
-                        comment);
-//                long recordInserted = axxessViewModel.storeUserComment(imageDBEntity);
-//                System.out.println("Inserted record Id=============" + recordInserted);
+        /*Check in db if user has made some comments to this image. If yes, set the comment in edittext.*/
+        application.executorService.execute(() -> {
+            String userComment = appDatabase.imageDao().retrieveImageComment(imageResponse.getAccount_id());
+            if (userComment != null && userComment.trim().length() > 0) {
+                requireActivity().runOnUiThread(() -> {
+                    dataBinding.editTextComment.setText(userComment);
+                    dataBinding.editTextComment.setSelection(userComment.length());
+                });
             }
+        });
+
+        dataBinding.btnSubmit.setOnClickListener(view1 -> {
+            String comment = dataBinding.editTextComment.getText().toString().trim();
+            ImageDBEntity imageDBEntity = new ImageDBEntity(imageResponse.getAccount_id(), imageResponse.getImages().get(0).getLink(),
+                    comment);
+            /*Store comment made by user in db for the particular image.*/
+            application.executorService.execute(() -> {
+                long recordInserted = appDatabase.imageDao().insertImageComment(imageDBEntity);
+                if (recordInserted > 0) {
+                    requireActivity().runOnUiThread(() -> Toast.makeText(requireActivity(), "Comment saved.", Toast.LENGTH_LONG).show());
+                }
+            });
         });
     }
 }

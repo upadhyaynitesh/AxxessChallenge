@@ -11,53 +11,60 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.fragments.DetailsFragment">
+        android:layout_height="match_parent">
 
-        <include
-            layout="@layout/include_toolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageViewItem"
-            android:layout_width="0dp"
-            android:layout_height="350dp"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:scaleType="centerCrop"
-            app:itemImage="@{imageResponse.images}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewItem">
+            android:layout_height="match_parent"
+            tools:context=".ui.fragments.DetailsFragment">
 
-            <Button
-                android:id="@+id/btnSubmit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/padding_small"
-                android:text="@string/button_submit"></Button>
+            <include
+                layout="@layout/include_toolbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/editTextComment"
+            <ImageView
+                android:id="@+id/imageViewItem"
+                android:layout_width="0dp"
+                android:layout_height="350dp"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:contentDescription="@string/item_image_cd"
+                android:scaleType="fitCenter"
+                app:itemImage="@{imageResponse.images}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_small"
-                android:layout_toStartOf="@+id/btnSubmit"></EditText>
+                android:layout_marginHorizontal="@dimen/margin_small"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewItem">
 
-        </RelativeLayout>
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/padding_small"
+                    android:text="@string/button_submit" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/editTextComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_small"
+                    android:layout_toStartOf="@+id/btnSubmit"
+                    android:hint="@string/comment_box_hint"></EditText>
+            </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

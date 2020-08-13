@@ -1,15 +1,17 @@
 package com.example.axxesschallenge.ui.fragments
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.SavedStateViewModelFactory
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.axxesschallenge.R
 import com.example.axxesschallenge.databinding.FragmentMainBinding
@@ -17,36 +19,55 @@ import com.example.axxesschallenge.model.ImageResponse
 import com.example.axxesschallenge.model.ImgurResponse
 import com.example.axxesschallenge.networking.Status
 import com.example.axxesschallenge.ui.adapter.GridViewAdapter
+import com.example.axxesschallenge.utils.Utils.hideKeyboard
 import com.example.axxesschallenge.viewmodel.AxxessViewModel
 
 class MainFragment : Fragment() {
-    private var axxessViewModel: AxxessViewModel? = AxxessViewModel()
+    private lateinit var axxessViewModel: AxxessViewModel
     private lateinit var imgurResponse: ImgurResponse
     private lateinit var imgList: List<ImageResponse>
     private lateinit var dataBinding: FragmentMainBinding
+    private var rootView: View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_main, container, false
-        )
-        /*Set the life cycle owner for data binding*/
-        dataBinding.lifecycleOwner = this
-        /*Set the view model object for data binding to be set in layout file.*/
-        dataBinding.axxessViewModel = axxessViewModel
 
-        /*Get the root view using dataBinding.root*/
-        val view = dataBinding.root
+        val factory = SavedStateViewModelFactory(requireActivity().application, this)
+        axxessViewModel = ViewModelProvider(requireActivity(), factory)
+            .get(AxxessViewModel::class.java)
 
-        return view
+        if (rootView == null) {
+            // Inflate the layout for this fragment
+            dataBinding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_main, container, false
+            )
+            /*Set the life cycle owner for data binding*/
+            dataBinding.lifecycleOwner = this
+            /*Set the view model object for data binding to be set in layout file.*/
+            dataBinding.axxessViewModel = axxessViewModel
+
+            /*Get the root view using dataBinding.root*/
+            rootView = dataBinding.root
+            dataBinding.editTextSearch.requestFocus()
+        } else {
+            // Do not inflate the layout again.
+            // The returned View of onCreateView will be added into the fragment.
+            // However it is not allowed to be added twice even if the parent is same.
+            // So we must remove rootView from the existing parent view group
+            // (it will be added back).
+            (rootView?.parent as? ViewGroup)?.removeView(rootView)
+        }
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setObservers()
+    }
 
+    private fun setObservers() {
         /*We are observing @imgurResponseLiveData to populate data in gridview. It will be called as any change happens to @imgurResponseLiveData.*/
         axxessViewModel?.imgurResponseLiveData?.observe(viewLifecycleOwner, Observer {
             //TODO:Showing toast just for testing purpose. Should be removed before releasing the code finally.
@@ -70,6 +91,8 @@ class MainFragment : Fragment() {
             val bundleArgs = Bundle().apply {
                 putSerializable("imageResponse", imgList[position])
             }
+            dataBinding.editTextSearch.setText("")
+            dataBinding.editTextSearch.hideKeyboard()
             /*Navigate to the next screen with bundleArgs(Having reference to the object to be shown on the Details screen.)*/
             findNavController().navigate(R.id.toDetailsFragment, bundleArgs)
         }

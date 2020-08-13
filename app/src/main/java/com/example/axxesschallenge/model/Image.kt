@@ -66,7 +66,7 @@ data class Image(
             if (image != null) {
                 Glide.with(view.context)  //2
                     .load(image[0].link) //3
-                    .centerCrop() //4
+                    .optionalFitCenter() //4
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.place_holder) //5
                     .into(view)

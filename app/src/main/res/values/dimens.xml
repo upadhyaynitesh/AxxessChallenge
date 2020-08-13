@@ -6,7 +6,6 @@
 
     <!--Common paddings-->
     <dimen name="padding_small">5dp</dimen>
-    <dimen name="padding_normal">10dp</dimen>
 
     <!--Grid items-->
     <dimen name="grid_image_size">100dp</dimen>

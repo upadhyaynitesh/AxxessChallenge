@@ -10,10 +10,19 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class AxxessViewModel : ViewModel() {
+class AxxessViewModel(private val state: SavedStateHandle) : ViewModel() {
 
+    // Keep the key as a constant
+    companion object {
+        private const val USER_KEY = "userId"
+    }
+
+    private val savedStateHandle = state
     private val apiRepository = ApiRepository()
-    private val queryStringLiveData = MutableLiveData<String>()
+
+    /*Retrieve search key using savedStateHandle, it helps in persisting the state on screen rotation.*/
+    private val queryStringLiveData: MutableLiveData<String> =
+        savedStateHandle.getLiveData(USER_KEY)
 
     /*Initialized live data. As we are not going to expose mutable live data.
     * Used Transformations.switchMap to make sure any changes happen to queryString will call the apiRepository.fetchApi
@@ -26,6 +35,8 @@ class AxxessViewModel : ViewModel() {
 
     fun setUserSearchString(queryString: String?) {
         this.queryStringLiveData.postValue(queryString)
+        /*Storing search key in savedStateHandle to persist the state on screen rotation.*/
+        savedStateHandle.set(USER_KEY, queryString)
     }
 
     fun getSearchTextWatcher(): TextWatcher? {
@@ -53,7 +64,7 @@ class AxxessViewModel : ViewModel() {
 
                 viewModelScope.launch {
                     delay(250)  //debounce timeOut 250ms
-                    if (searchText.trim().isNotEmpty() && searchText != searchFor)
+                    if (searchText.trim().length < 2 || searchText != searchFor)
                         return@launch
                     setUserSearchString(searchText)
                 }
