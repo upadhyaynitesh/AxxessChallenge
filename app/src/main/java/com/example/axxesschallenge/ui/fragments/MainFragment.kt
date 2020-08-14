@@ -28,7 +28,7 @@ class MainFragment : Fragment() {
     private lateinit var imgList: List<ImageResponse>
     private lateinit var dataBinding: FragmentMainBinding
     private var rootView: View? = null
-
+    private var hasSetObserver = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,7 +65,12 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setObservers()
+        /*It will not set the observer again if already set once. Otherwise if come back from Details screen
+        * this method calls the setObserver again.*/
+        if (!hasSetObserver) {
+            setObservers()
+            hasSetObserver = true
+        }
     }
 
     private fun setObservers() {
