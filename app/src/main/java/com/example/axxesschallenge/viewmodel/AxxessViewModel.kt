@@ -10,19 +10,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class AxxessViewModel(private val state: SavedStateHandle) : ViewModel() {
+class AxxessViewModel(apiRepository: ApiRepository) :
+    ViewModel() {
 
-    // Keep the key as a constant
-    companion object {
-        private const val QUERY_KEY = "searchId"
-    }
-
-    private val savedStateHandle = state
-    private val apiRepository = ApiRepository()
-
-    /*Retrieve search key using savedStateHandle, it helps in persisting the state on screen rotation.*/
-    private val queryStringLiveData: MutableLiveData<String> =
-        savedStateHandle.getLiveData(QUERY_KEY)
+    private val queryStringLiveData = MutableLiveData<String>()
 
     /*Initialized live data. As we are not going to expose mutable live data.
     * Used Transformations.switchMap to make sure any changes happen to queryString will call the apiRepository.fetchApi
@@ -35,8 +26,6 @@ class AxxessViewModel(private val state: SavedStateHandle) : ViewModel() {
 
     fun setUserSearchString(queryString: String?) {
         this.queryStringLiveData.postValue(queryString)
-        /*Storing search key in savedStateHandle to persist the state on screen rotation.*/
-        savedStateHandle.set(QUERY_KEY, queryString)
     }
 
     fun getSearchTextWatcher(): TextWatcher? {
@@ -61,10 +50,11 @@ class AxxessViewModel(private val state: SavedStateHandle) : ViewModel() {
                     return
 
                 searchFor = searchText
-
+                /*Below code will have a debounce on 250 ms on search box and also will check if user has entered
+                 * at least 3 characters before start searching.*/
                 viewModelScope.launch {
                     delay(250)  //debounce timeOut 250ms
-                    if (searchText.trim().length < 2 || searchText != searchFor)
+                    if (searchText.trim().length < 3 || searchText != searchFor)
                         return@launch
                     setUserSearchString(searchText)
                 }

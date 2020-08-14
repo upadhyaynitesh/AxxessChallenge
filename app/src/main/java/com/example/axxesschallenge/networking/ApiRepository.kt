@@ -8,9 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ApiRepository {
-
-    private val retrofitBuilder = RetrofitBuilder.createService(FetchAPI::class.java)
+class ApiRepository(private val fetchAPI: FetchAPI) {
 
     fun fetchApi(queryString: String): MutableLiveData<Resource<ImgurResponse>> {
 
@@ -18,7 +16,7 @@ class ApiRepository {
 
         imgurResponse.value = Resource.loading(null)
 
-        retrofitBuilder.getImgurResponse(queryString)
+        fetchAPI.getImgurResponse(queryString)
             .enqueue(object : Callback<ImgurResponse> {
                 override fun onResponse(
                     call: Call<ImgurResponse>,

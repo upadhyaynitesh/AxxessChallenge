@@ -46,6 +46,7 @@ dependencies {
     def lifecycleVersion = '2.2.0'
     def glide_version = "4.11.0"
     def room_version = "2.2.5"
+    def koin_version = "2.0.1"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -80,4 +81,7 @@ dependencies {
     /*Room Database*/
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    // Koin
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 }

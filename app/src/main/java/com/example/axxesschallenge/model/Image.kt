@@ -3,7 +3,9 @@ package com.example.axxesschallenge.model
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.axxesschallenge.R
 import java.io.Serializable
 
@@ -47,12 +49,13 @@ data class Image(
         @JvmStatic
         fun loadThumbnail(view: ImageView, image: List<Image>?) {
             if (image != null) {
-                Glide.with(view.context)  //2
-                    .load(image[0].link) //3
-                    .centerCrop() //4
-                    .thumbnail(/*sizeMultiplier=*/ 0.40f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.place_holder) //5
+                Glide.with(view.context)
+                    .load(image[0].link)
+                    /*Recommended format to download images RGB565*/
+                    .format(DecodeFormat.PREFER_RGB_565)
+                    .placeholder(R.drawable.place_holder)
+                    .apply(RequestOptions().override(100, 100))
+                    .centerCrop()
                     .into(view)
             } else {
                 view.setImageResource(R.drawable.place_holder)
@@ -64,11 +67,12 @@ data class Image(
         @JvmStatic
         fun loadImage(view: ImageView, image: List<Image>?) {
             if (image != null) {
-                Glide.with(view.context)  //2
-                    .load(image[0].link) //3
-                    .optionalFitCenter() //4
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.place_holder) //5
+                Glide.with(view.context)
+                    .load(image[0].link)
+                    /*Recommended format to download images RGB565*/
+                    .format(DecodeFormat.PREFER_RGB_565)
+                    .placeholder(R.drawable.place_holder)
+                    .optionalFitCenter()
                     .into(view)
             } else {
                 view.setImageResource(R.drawable.place_holder)

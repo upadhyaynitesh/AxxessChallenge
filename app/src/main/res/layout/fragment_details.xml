@@ -17,7 +17,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:context=".ui.fragments.DetailsFragment">
 
             <include
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_small"
                     android:layout_toStartOf="@+id/btnSubmit"
-                    android:hint="@string/comment_box_hint"></EditText>
+                    android:hint="@string/comment_box_hint" />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

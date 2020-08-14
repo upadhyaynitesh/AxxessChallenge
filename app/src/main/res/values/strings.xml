@@ -19,6 +19,7 @@
     <string name="error_title">Error</string>
     <string name="ok_button">OK</string>
     <string name="no_data_error_message">No data available. Please try searching a different image.</string>
-    <string name="something_went_wrong">Something went weong. Please try again later.</string>
+    <string name="no_data_detail_screen_message">No data available. Please try again later.</string>
+    <string name="something_went_wrong">Something went wrong. Please try again later.</string>
     <string name="internet_connection_error">Please check your network connection.</string>
 </resources>
